@@ -34,7 +34,7 @@ public class DbConnection {
        return properties;
    }
 
-    public static void connectMySql() throws ClassNotFoundException, SQLException, IOException {
+    public static void connectPostgresql() throws ClassNotFoundException, SQLException, IOException {
 
       Properties properties = loadProperties();
 
@@ -56,7 +56,7 @@ public class DbConnection {
 
         List<String> list = new ArrayList<>();
 
-        connectMySql();
+        connectPostgresql();
         statement = connect.createStatement();
         resultSet = statement.executeQuery("select * from "+ tableNmae);
         list = getResultSetData(nameOfColumn1);
@@ -84,7 +84,7 @@ public class DbConnection {
 
         List<String> list = new ArrayList<>();
 
-        connectMySql();
+        connectPostgresql();
         statement = connect.createStatement();
         resultSet = statement.executeQuery("select * from "+ tableNmae);
         list = getResultSetData(nameOfColumn1,nameOfColumn2,nameOfColumn3);
@@ -115,9 +115,9 @@ public class DbConnection {
      *
      * */
 
-    public static void createTableFromStringToMySql(String tableName, String columnName){
+    public static void createTableFromStringToPostgresql(String tableName, String columnName){
         try {
-            connectMySql();
+            connectPostgresql();
             ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
             ps.executeUpdate();
             ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+columnName+"` varchar(2500) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
@@ -138,10 +138,10 @@ public class DbConnection {
      * Insert data to a existing table
      *
      * */
-    public static void insertDataFromArrayListToMySql(List<String> list,String tableName, String columnName)
+    public static void insertDataFromArrayListToPostgresql(List<String> list,String tableName, String columnName)
     {
         try {
-            connectMySql();
+            connectPostgresql();
 
             for(String st:list){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
