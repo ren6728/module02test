@@ -8,11 +8,12 @@ public interface SymbianPhone {
      *
      * Declare 3 methods sendText(), makeCall(), contactList()
      * Can a method contains method body in Interface?
-     * Ans:
+     * Ans: No
      *
      * */
 
     public void sendText();
 
     public void makeCall();
+    public void contactList();
 }
