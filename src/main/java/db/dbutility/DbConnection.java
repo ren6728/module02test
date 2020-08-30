@@ -52,54 +52,49 @@ public class DbConnection {
      *
      * */
 
-    public static List<String> readDatabase(String tableNmae, String nameOfColumn1) throws SQLException, ClassNotFoundException, IOException {
+    public static List<String> readDatabase(String actor, String first_name) throws SQLException, ClassNotFoundException, IOException {
 
         List<String> list = new ArrayList<>();
 
         connectPostgresql();
         statement = connect.createStatement();
-        resultSet = statement.executeQuery("select * from "+ tableNmae);
-        list = getResultSetData(nameOfColumn1);
+        resultSet = statement.executeQuery("select * from "+ actor);
+        list = getResultSetData(first_name);
         return list;
     }
 
-    public static List<String> getResultSetData(String nameOfColumn1) throws SQLException {
+    public static List<String> getResultSetData(String first_name) throws SQLException {
 
         List<String> dataList = new ArrayList<>();
 
         while (resultSet.next()){
-
-            String cell1 = resultSet.getString(nameOfColumn1);
-
-
+            String cell1 = resultSet.getString(first_name);
             dataList.add(cell1);
-
         }
-
         return dataList;
 
     }
 
-    public static List<String> readDatabase(String tableNmae, String nameOfColumn1,String nameOfColumn2, String nameOfColumn3) throws SQLException, ClassNotFoundException, IOException {
+    public static List<String> readDatabase(String customer, String first_name,String last_name, String email) throws SQLException, ClassNotFoundException, IOException {
 
         List<String> list = new ArrayList<>();
 
         connectPostgresql();
         statement = connect.createStatement();
-        resultSet = statement.executeQuery("select * from "+ tableNmae);
-        list = getResultSetData(nameOfColumn1,nameOfColumn2,nameOfColumn3);
+        resultSet = statement.executeQuery("select * from "+ customer);
+        list = getResultSetData(first_name,last_name,email);
         return list;
     }
 
-    public static List<String> getResultSetData(String nameOfColumn1,String nameOfColumn2, String nameOfColumn3 ) throws SQLException {
+    public static List<String> getResultSetData(String first_name,String last_name, String email ) throws SQLException {
 
         List<String> dataList = new ArrayList<>();
 
         while (resultSet.next()){
 
-            String cell1 = resultSet.getString(nameOfColumn1);
-            String cell2 = resultSet.getString(nameOfColumn2);
-            String cell3 = resultSet.getString(nameOfColumn3);
+            String cell1 = resultSet.getString(first_name);
+            String cell2 = resultSet.getString(last_name);
+            String cell3 = resultSet.getString(email);
 
             dataList.add(cell1); dataList.add(cell2); dataList.add(cell3);
 
@@ -115,12 +110,12 @@ public class DbConnection {
      *
      * */
 
-    public static void createTableFromStringToPostgresql(String tableName, String columnName){
+    public static void createTableFromStringToPostgresql(String actorandcustomer, String newname){
         try {
             connectPostgresql();
-            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
+            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+actorandcustomer+"`;");
             ps.executeUpdate();
-            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+columnName+"` varchar(2500) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
+            ps = connect.prepareStatement("CREATE TABLE `"+actorandcustomer+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+newname+"` varchar(2500) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
 
         } catch (IOException e) {
@@ -138,13 +133,13 @@ public class DbConnection {
      * Insert data to a existing table
      *
      * */
-    public static void insertDataFromArrayListToPostgresql(List<String> list,String tableName, String columnName)
+    public static void insertDataFromArrayListToPostgresql(List<String> list,String actorandcustomer, String newname)
     {
         try {
             connectPostgresql();
 
             for(String st:list){
-                ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
+                ps = connect.prepareStatement("INSERT INTO "+actorandcustomer+" ( "+newname+" ) VALUES(?)");
                 ps.setObject(1,st);
                 ps.executeUpdate();
             }
@@ -157,6 +152,7 @@ public class DbConnection {
             e.printStackTrace();
         }
     }
+
 
 
 }
