@@ -25,16 +25,14 @@ public class CompareTwoDatabaseTable{
 
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
 
-
-       /* List<String> actor = new ArrayList<>();
+       List<String> actor = new ArrayList<>();
         List<String> customer = new ArrayList<>();
         actor = dbConnection.readDatabase("actor", "first_name");
         customer = dbConnection.readDatabase("customer", "first_name");
         System.out.println(actor);
-        System.out.println(customer);*/
-
-
+        System.out.println(customer);
+    }
 
         }
-    }
+
 
