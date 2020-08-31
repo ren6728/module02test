@@ -18,31 +18,31 @@ public class DbConnection {
      * */
 
 
-   static Connection connect = null;
-   static Statement statement = null;
-   static ResultSet resultSet = null;
-   static PreparedStatement ps = null;
+    static Connection connect = null;
+    static Statement statement = null;
+    static ResultSet resultSet = null;
+    static PreparedStatement ps = null;
 
 
-   public static Properties loadProperties() throws IOException {
+    public static Properties loadProperties() throws IOException {
 
-       InputStream inputStream = new FileInputStream("src/main/resources/secret.properties");
+        InputStream inputStream = new FileInputStream("src/main/resources/secret.properties");
 
-       Properties properties = new Properties();
-       properties.load(inputStream);
-       inputStream.close();
-       return properties;
-   }
+        Properties properties = new Properties();
+        properties.load(inputStream);
+        inputStream.close();
+        return properties;
+    }
 
     public static void connectPostgresql() throws ClassNotFoundException, SQLException, IOException {
 
-      Properties properties = loadProperties();
+        Properties properties = loadProperties();
 
         String url = properties.getProperty("db.url");
         String userName = properties.getProperty("db.userName");
         String passWord = properties.getProperty("db.password");
 
-         connect = DriverManager.getConnection(url,userName,passWord);
+        connect = DriverManager.getConnection(url,userName,passWord);
 
         System.out.println("Database Connected");
 
@@ -52,49 +52,54 @@ public class DbConnection {
      *
      * */
 
-    public static List<String> readDatabase(String actor, String first_name) throws SQLException, ClassNotFoundException, IOException {
+    public static List<String> readDatabase(String tableNmae, String nameOfColumn1) throws SQLException, ClassNotFoundException, IOException {
 
         List<String> list = new ArrayList<>();
 
         connectPostgresql();
         statement = connect.createStatement();
-        resultSet = statement.executeQuery("select * from "+ actor);
-        list = getResultSetData(first_name);
+        resultSet = statement.executeQuery("select * from "+ tableNmae);
+        list = getResultSetData(nameOfColumn1);
         return list;
     }
 
-    public static List<String> getResultSetData(String first_name) throws SQLException {
+    public static List<String> getResultSetData(String nameOfColumn1) throws SQLException {
 
         List<String> dataList = new ArrayList<>();
 
         while (resultSet.next()){
-            String cell1 = resultSet.getString(first_name);
+
+            String cell1 = resultSet.getString(nameOfColumn1);
+
+
             dataList.add(cell1);
+
         }
+
         return dataList;
 
     }
 
-    public static List<String> readDatabase(String customer, String first_name,String last_name, String email) throws SQLException, ClassNotFoundException, IOException {
+    public static List<String> readDatabase(String tableNmae, String nameOfColumn1,String nameOfColumn2, String nameOfColumn3) throws SQLException, ClassNotFoundException, IOException {
 
         List<String> list = new ArrayList<>();
 
         connectPostgresql();
         statement = connect.createStatement();
-        resultSet = statement.executeQuery("select * from "+ customer);
-        list = getResultSetData(first_name,last_name,email);
+        resultSet = statement.executeQuery("select * from "+ tableNmae);
+        list = getResultSetData(nameOfColumn1,nameOfColumn2,nameOfColumn3);
         return list;
     }
 
-    public static List<String> getResultSetData(String first_name,String last_name, String email ) throws SQLException {
+    public static List<String> getResultSetData(String nameOfColumn1,String nameOfColumn2, String nameOfColumn3 ) throws SQLException {
 
         List<String> dataList = new ArrayList<>();
 
         while (resultSet.next()){
 
-            String cell1 = resultSet.getString(first_name);
-            String cell2 = resultSet.getString(last_name);
-            String cell3 = resultSet.getString(email);
+            String cell1 = resultSet.getString(nameOfColumn1);
+            String cell2 = resultSet.getString(nameOfColumn2);
+            String cell3 = resultSet.getString(nameOfColumn3);
 
             dataList.add(cell1); dataList.add(cell2); dataList.add(cell3);
 
@@ -110,12 +115,12 @@ public class DbConnection {
      *
      * */
 
-    public static void createTableFromStringToPostgresql(String actorandcustomer, String newname){
+    public static void createTableFromStringToPostgresql(String tableName, String columnName){
         try {
             connectPostgresql();
-            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+actorandcustomer+"`;");
+            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
             ps.executeUpdate();
-            ps = connect.prepareStatement("CREATE TABLE `"+actorandcustomer+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+newname+"` varchar(2500) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
+            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+columnName+"` varchar(2500) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
 
         } catch (IOException e) {
@@ -133,13 +138,13 @@ public class DbConnection {
      * Insert data to a existing table
      *
      * */
-    public static void insertDataFromArrayListToPostgresql(List<String> list,String actorandcustomer, String newname)
+    public static void insertDataFromArrayListToPostgresql(List<String> list,String tableName, String columnName)
     {
         try {
             connectPostgresql();
 
             for(String st:list){
-                ps = connect.prepareStatement("INSERT INTO "+actorandcustomer+" ( "+newname+" ) VALUES(?)");
+                ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
                 ps.setObject(1,st);
                 ps.executeUpdate();
             }
@@ -154,6 +159,4 @@ public class DbConnection {
     }
 
 
-
 }
-
