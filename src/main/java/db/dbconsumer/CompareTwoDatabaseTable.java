@@ -1,17 +1,7 @@
 package db.dbconsumer;
 
-import db.dbutility.DbConnection;
 
-import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentSkipListMap;
 
-import static db.dbutility.DbConnection.resultSet;
 
 public class CompareTwoDatabaseTable{
 
@@ -21,6 +11,7 @@ public class CompareTwoDatabaseTable{
      * Later get the records using Java and compare two
      * Later use unit testing framework to test in under test
      */
+   /**
     static DbConnection dbConnection = new DbConnection();
 
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
@@ -32,7 +23,7 @@ public class CompareTwoDatabaseTable{
         System.out.println(actor);
         System.out.println(customer);
     }
-
+*/
         }
 
 

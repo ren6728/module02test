@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class DataReader {
 	public void readFile() throws IOException {
-		String filePath="/Users/renxing/module02test/src/main/resources/Key-To-Success.txt";
+		String filePath="/Users/renxing/module02test/src/main/resources/Key-To-Success";
 		FileReader fileReader=new FileReader(filePath);
 
 		int i;
